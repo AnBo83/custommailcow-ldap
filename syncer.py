@@ -139,8 +139,6 @@ def apply_config(config_file, config_data):
 def read_config():
     required_config_keys = [
         'LDAP-MAILCOW_LDAP_URI',
-        'LDAP-MAILCOW_LDAP_GC_URI',
-        'LDAP-MAILCOW_LDAP_DOMAIN',
         'LDAP-MAILCOW_LDAP_BASE_DN',
         'LDAP-MAILCOW_LDAP_BIND_DN',
         'LDAP-MAILCOW_LDAP_BIND_DN_PASSWORD',

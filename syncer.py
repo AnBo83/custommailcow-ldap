@@ -172,11 +172,8 @@ def read_dovecot_passdb_conf_template():
         data = Template(f.read())
 
     return data.substitute(
-        ldap_gc_uri=config['LDAP_GC_URI'],
-        ldap_domain=config['LDAP_DOMAIN'],
-        ldap_base_dn=config['LDAP_BASE_DN'],
-        ldap_bind_dn=config['LDAP_BIND_DN'],
-        ldap_bind_dn_password=config['LDAP_BIND_DN_PASSWORD']
+        ldap_uri=config['LDAP_URI'],
+        ldap_base_dn=config['LDAP_BASE_DN']
     )
 
 

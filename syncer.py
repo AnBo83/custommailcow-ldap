@@ -48,7 +48,7 @@ def sync():
 
     ldap_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            config['LDAP_FILTER'],
-                                           ['mail', 'displayName', 'userAccountControl'])
+                                           ['mailPrimaryAddress', 'displayName', 'userAccountControl'])
 
     filedb.session_time = datetime.datetime.now()
 
@@ -57,7 +57,7 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not x[0]:
                 continue
-            email = x[1]['mail'][0].decode()
+            email = x[1]['mailPrimaryAddress'][0].decode()
             ldap_name = x[1]['displayName'][0].decode()
             ldap_active = False if int(x[1]['userAccountControl'][0].decode()) & 0b10 else True
 

@@ -59,6 +59,8 @@ def sync():
                 continue
             email = x[1]['mailPrimaryAddress'][0].decode()
             ldap_name = x[1]['displayName'][0].decode()
+            ldap_active = True
+            
             (db_user_exists, db_user_active) = filedb.check_user(email)
             (api_user_exists, api_user_active, api_name) = api.check_user(email)
 

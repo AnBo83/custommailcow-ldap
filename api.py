@@ -39,6 +39,14 @@ def add_user(email, name, active, quotum):
 
     __post_request('api/v1/add/mailbox', json_data)
 
+    json_data =  {
+                'active': 1 if active else 2,
+                'address': alias, # TODO not defined
+                'goto': email
+                }
+        
+    __post_request('api/v1/add/alias', json_data)
+
     json_data = {
         'items': [email],
         'attr': {
@@ -60,7 +68,7 @@ def add_user(email, name, active, quotum):
             ]
         }
     }
-
+    
     __post_request('api/v1/edit/user-acl', json_data)
 
 

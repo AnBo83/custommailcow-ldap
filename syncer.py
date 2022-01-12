@@ -127,9 +127,9 @@ def sync():
             #(file_alias) = filedb.check_user(user_alias)
             #(api_user_alias) = api.check_user(user_alias)
             
-        except Exception:
-            logging.info(f"Fehler bei der Verarbeitung von ")
-            pass
+       # except Exception:
+       #     logging.info(f"Fehler bei der Verarbeitung von ")
+       #     pass
 
 def apply_config(config_file, config_data):
     if os.path.isfile(config_file):

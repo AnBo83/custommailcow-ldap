@@ -59,7 +59,7 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not x[0]:
                 continue
-            email = x[1]['mailPrimaryAddress'][0].decode()
+            email = x[1]['mailAlternativeAddress'][0].split(",")
             ldap_name = x[1]['displayName'][0].decode()
             ldap_active = True
             

@@ -49,7 +49,9 @@ def sync():
     ldap_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            config['LDAP_FILTER'],
                                            ['mailPrimaryAddress', 'displayName', 'userAccountControl', 'mailAlternativeAddress'])
-
+    ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
+                                           config['LDAP_FILTER'],
+                                           ['mailPrimaryAddress', 'displayName', 'userAccountControl', 'mailAlternativeAddress'])
     filedb.session_time = datetime.datetime.now()
 
     for x in ldap_results:
@@ -166,11 +168,17 @@ def read_config():
 
     if 'LDAP-MAILCOW_SOGO_LDAP_FILTER' in os.environ and 'LDAP-MAILCOW_LDAP_FILTER' not in os.environ:
         sys.exit('LDAP-MAILCOW_LDAP_FILTER is required when you specify LDAP-MAILCOW_SOGO_LDAP_FILTER')
+    
+    if 'LDAP-MAILCOW_LDAP_ALIAS_FILTER' in os.environ and 'LDAP-MAILCOW_LDAP_ALIAS_FILTER' not in os.environ:
+        sys.exit('LDAP-MAILCOW_LDAP_ALIAS_FILTER is required when you specify LDAP-MAILCOW_SOGO_LDAP_FILTER')
+    
 
     config['LDAP_FILTER'] = os.environ[
         'LDAP-MAILCOW_LDAP_FILTER'] if 'LDAP-MAILCOW_LDAP_FILTER' in os.environ else '(&(objectClass=user)(objectCategory=person))'
     config['SOGO_LDAP_FILTER'] = os.environ[
         'LDAP-MAILCOW_SOGO_LDAP_FILTER'] if 'LDAP-MAILCOW_SOGO_LDAP_FILTER' in os.environ else "objectClass='user' AND objectCategory='person'"
+    config['LDAP_ALIAS_FILTER'] = os.environ[
+        'LDAP-MAILCOW_LDAP_ALIAS_FILTER'] if 'LDAP-MAILCOW_LDAP_ALIAS_FILTER' in os.environ else "objectClass='user' AND objectCategory='person'"
 
 
 def read_dovecot_passdb_conf_template():

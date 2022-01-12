@@ -116,18 +116,19 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not alias[0]:
                 continue
-            user_alias = alias
-            ldap_active = True
+            ldap_alias = x[1]['mailAlternativeAddress'][0].split(",")
+         #  user_alias = alias
+         #  ldap_active = True
             
-          #  if api_user_alias != file_alias:
-            result["mailAlternativeAddress"] = ldap_alias_results.split(",")
-            logging.info(f"add {result}") 
+         #  if api_user_alias != file_alias:
+         #   result["mailAlternativeAddress"] = ldap_alias_results.split(",")
+            logging.info(f"add {ldap_alias}") 
             
             #(file_alias) = filedb.check_user(user_alias)
             #(api_user_alias) = api.check_user(user_alias)
             
         except Exception:
-            logging.info(f"Fehler bei der Verarbeitung von {result}")
+            logging.info(f"Fehler bei der Verarbeitung von ")
             pass
 
 def apply_config(config_file, config_data):

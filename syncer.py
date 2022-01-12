@@ -14,12 +14,12 @@ import filedb
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%d.%m.%y %H:%M:%S', level=logging.INFO)
 config = {}
 output_groups='conf/groups.csv'
-
+output_users='conf/users.csv'
+output_members_group='conf/' # here is a directory
 
 def main():
     global config
     read_config()
-    getMembers('cn=Chat,cn=Groups,dc=bl,dc=lan')
 
     passdb_conf = read_dovecot_passdb_conf_template()
     plist_ldap = read_sogo_plist_ldap_template()
@@ -132,15 +132,6 @@ def sync():
        # except Exception:
        #     logging.info(f"Fehler bei der Verarbeitung von ")
        #     pass
-def getMembers(groups_entries):
-    for group in groups_entries:
-        cn=str(group['cn'].values)[2:-2]
-        dn=str(group['distinguishedName'].values)[2:-2]
-        filter_grps_members='(&(objectCategory=user)(memberOf='+dn+'))'
-        attrs_grps_members = ['cn', 'sAMAccountName', 'givenname', 'sn', 'mail', 'description', 'objectclass', 'distinguishedName']
-        entries = search(filter_grps_members, attrs_grps_members)
-        individual_file = output_members_group + str(cn) + '.csv'
-        normalize(entries, individual_file)
         
 def apply_config(config_file, config_data):
     if os.path.isfile(config_file):
@@ -239,6 +230,55 @@ def read_dovecot_extra_conf():
 
     return data
 
+def search(filter, attrs):
+    conn.search(base_dn, filter, attributes=attrs)
+    entries = conn.entries
+    print(entries)
+    return entries
+
+
+def normalize(entries, file):
+    data=[]
+    for i in entries:
+        row=str(i['sAMAccountName'].values)[2:-2]+';'+str(i['cn'].values)[2:-2]+';'+str(i['givenname'].values)[2:-2]+';'+str(i['sn'].values)[2:-2]+';'+str(i['description'].values)[2:-2]+';'+str(i['mail'].values)[2:-2]
+        data.append(row)
+    export(file, data)
+
+def export(file, data):
+    with open(file, 'a', encoding='utf-8') as f:
+        # clean file before write
+        f.truncate(0)
+        f.writelines('\n'.join(data))
+        f.close()
+
+def getUsers():
+    # Show only activated users
+    # filter = '(&(memberOf=cn=workers,cn=users,dc=example,dc=com)(!(userAccountControl=66050)))'
+    filter_users = '(&(objectclass=person)(objectclass=user)(objectclass=organizationalPerson)(!(objectclass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))'
+    attrs_users = ['cn', 'sAMAccountName', 'givenname', 'sn', 'mail', 'description', 'telephonenumber', 'homephone', 'mobile', 'objectclass', 'userAccountControl']
+    entries = search(filter_users, attrs_users)
+    normalize(entries, output_users)
+
+
+def getGroups():
+    filter_grps = '(&(objectCategory=group))'
+    attrs_grps = ['cn', 'sAMAccountName', 'givenname', 'sn', 'mail', 'description', 'objectclass', 'distinguishedName']
+    entries = search(filter_grps, attrs_grps)
+    normalize(entries, output_groups)
+    getMembers(entries)
+
+def getMembers(groups_entries):
+    for group in groups_entries:
+        cn=str(group['cn'].values)[2:-2]
+        dn=str(group['distinguishedName'].values)[2:-2]
+        filter_grps_members='(&(objectCategory=user)(memberOf='+dn+'))'
+        attrs_grps_members = ['cn', 'sAMAccountName', 'givenname', 'sn', 'mail', 'description', 'objectclass', 'distinguishedName']
+        entries = search(filter_grps_members, attrs_grps_members)
+        individual_file = output_members_group + str(cn) + '.csv'
+        normalize(entries, individual_file)
+
+getUsers()
+getGroups()
 
 if __name__ == '__main__':
     main()

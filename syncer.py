@@ -127,7 +127,7 @@ def sync():
             (api_user_alias) = api.check_user(user_alias)
             
         except Exception:
-            logging.info(f"Exception during handling of {alias}")
+            logging.info(f"Fehler bei der Verarbeitung von {alias}")
             pass
 
 def apply_config(config_file, config_data):

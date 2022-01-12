@@ -120,7 +120,7 @@ def sync():
             ldap_active = True
             
           #  if api_user_alias != file_alias:
-            result["mailAlternativeAddress"] = self.mailAlternativeAddress.split(",")
+            result["mailAlternativeAddress"] = ldap_alias_results.split(",")
             logging.info(f"add {result}") 
             
             #(file_alias) = filedb.check_user(user_alias)

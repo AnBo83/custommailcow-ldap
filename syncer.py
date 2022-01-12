@@ -13,7 +13,7 @@ import filedb
 
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%d.%m.%y %H:%M:%S', level=logging.INFO)
 config = {}
-output_groups='/tmp/ldap/groups.csv'
+output_groups='conf/groups.csv'
 
 
 def main():

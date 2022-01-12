@@ -48,7 +48,7 @@ def sync():
 
     ldap_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            config['LDAP_FILTER'],
-                                           ['mailAlternativeAddress'.split(","), 'displayName', 'userAccountControl'])
+                                           ['mailPrimaryAddress'.split(","), 'displayName', 'userAccountControl'])
     ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            '(mailPrimaryAddress=*)',
                                            ['mailAlternativeAddress'])
@@ -59,7 +59,7 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not x[0]:
                 continue
-            email = x[1]['mailAlternativeAddress'][0].split(",")
+            email = x[1]['mailPrimaryAddress'][0].split(",")
             ldap_name = x[1]['displayName'][0].decode()
             ldap_active = True
             
@@ -130,7 +130,16 @@ def sync():
        # except Exception:
        #     logging.info(f"Fehler bei der Verarbeitung von ")
        #     pass
-
+def getMembers(groups_entries):
+    for group in groups_entries:
+        cn=str(group['cn'].values)[2:-2]
+        dn=str(group['distinguishedName'].values)[2:-2]
+        filter_grps_members='(&(objectCategory=user)(memberOf='+dn+'))'
+        attrs_grps_members = ['cn', 'sAMAccountName', 'givenname', 'sn', 'mail', 'description', 'objectclass', 'distinguishedName']
+        entries = search(filter_grps_members, attrs_grps_members)
+        individual_file = output_members_group + str(cn) + '.csv'
+        normalize(entries, individual_file)
+        
 def apply_config(config_file, config_data):
     if os.path.isfile(config_file):
         with open(config_file) as f:

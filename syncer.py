@@ -19,6 +19,7 @@ output_groups='conf/groups.csv'
 def main():
     global config
     read_config()
+    getMembers('Chat')
 
     passdb_conf = read_dovecot_passdb_conf_template()
     plist_ldap = read_sogo_plist_ldap_template()
@@ -97,7 +98,6 @@ def sync():
                 unchanged = False
                 
             if unchanged:
-                getMembers()
                 logging.info(f"Checked user {email}, unchanged")
         except Exception:
             logging.info(f"Exception during handling of {x}")

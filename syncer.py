@@ -231,7 +231,8 @@ def read_dovecot_extra_conf():
     return data
 
 def search(filter, attrs):
-    conn.search(base_dn, filter, attributes=attrs)
+    conn = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
+                                           filter, attributes=attrs)
     entries = conn.entries
     print(entries)
     return entries

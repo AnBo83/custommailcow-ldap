@@ -60,7 +60,6 @@ def sync():
             if not x[0]:
                 continue
             email = x[1]['mailPrimaryAddress'][0].decode()
-            alias = x[1]['mailAlternativeAddress'][0].decode()
             ldap_name = x[1]['displayName'][0].decode()
             ldap_active = True
             
@@ -96,9 +95,6 @@ def sync():
                 logging.info(f"Changed name of {email} in Mailcow to {ldap_name}")
                 unchanged = False
                 
-            if api_user_alias != ldap_alias:
-               logging.info(f"Checked user {email}, add {alias}") 
-
             if unchanged:
                 logging.info(f"Checked user {email}, unchanged")
         except Exception:
@@ -115,6 +111,17 @@ def sync():
         filedb.user_set_active_to(email, False)
         logging.info(f"Deactivated user {email} in filedb, not found in LDAP")
 
+    for alias in ldap_alias_results
+        try:
+            # LDAP Search still returns invalid objects, test instead of throw.
+            if not alias[0]:
+                continue
+            alias = alias[1]['mailAlternativeAddress'][0].split(',')
+            ldap_name = alias[1]['displayName'][0].decode()
+            ldap_active = True
+                if api_user_alias != ldap_alias:
+                    logging.info(f"Checked user {email}, add {alias}") 
+            
 
 def apply_config(config_file, config_data):
     if os.path.isfile(config_file):

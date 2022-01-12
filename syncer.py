@@ -48,7 +48,7 @@ def sync():
 
     ldap_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            config['LDAP_FILTER'],
-                                           ['mailPrimaryAddress', 'displayName', 'userAccountControl'])
+                                           ['mailPrimaryAddress', 'displayName', 'userAccountControl', 'mailAlternativeAddress'])
 
     filedb.session_time = datetime.datetime.now()
 
@@ -58,6 +58,7 @@ def sync():
             if not x[0]:
                 continue
             email = x[1]['mailPrimaryAddress'][0].decode()
+            alias = x[1]['mailAlternativeAddress'][0].decode()
             ldap_name = x[1]['displayName'][0].decode()
             ldap_active = True
             

@@ -120,7 +120,7 @@ def sync():
             ldap_active = True
             
           #  if api_user_alias != file_alias:
-                logging.info(f"Checked user {email}, add {alias}") 
+                logging.info(f"Checked user {alias}, add {user_alias}") 
             
             #(file_alias) = filedb.check_user(user_alias)
             #(api_user_alias) = api.check_user(user_alias)

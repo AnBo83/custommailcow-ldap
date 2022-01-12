@@ -50,7 +50,7 @@ def sync():
                                            config['LDAP_FILTER'],
                                            ['mailPrimaryAddress', 'displayName', 'userAccountControl', 'mailAlternativeAddress'])
     ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
-                                           '(uid={email})',
+                                           '(uid=aborchardt)',
                                            ['mailAlternativeAddress'])
     filedb.session_time = datetime.datetime.now()
 

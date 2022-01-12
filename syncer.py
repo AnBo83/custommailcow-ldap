@@ -63,7 +63,7 @@ def sync():
             ldap_active = True
             
             (db_user_exists, db_user_active) = filedb.check_user(email)
-            (api_user_exists, api_user_active, api_name) = api.check_user(email)
+            (api_user_exists, api_user_active, api_name, api_user_alias) = api.check_user(email)
 
             unchanged = True
 
@@ -93,6 +93,9 @@ def sync():
                 api.edit_user(email, name=ldap_name)
                 logging.info(f"Changed name of {email} in Mailcow to {ldap_name}")
                 unchanged = False
+                
+            if api_user_alias != ldap_alias:
+               logging.info(f"Checked user {email}, add {alias}") 
 
             if unchanged:
                 logging.info(f"Checked user {email}, unchanged")

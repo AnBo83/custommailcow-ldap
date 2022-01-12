@@ -50,7 +50,7 @@ def sync():
                                            config['LDAP_FILTER'],
                                            ['mailPrimaryAddress', 'displayName', 'userAccountControl'])
     ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
-                                           
+                                           '(mailPrimaryAddress=*)',
                                            ['mailAlternativeAddress'])
     filedb.session_time = datetime.datetime.now()
 
@@ -116,14 +116,14 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not alias[0]:
                 continue
-            user_alias = ['mailAlternativeAddress']
-            ldap_active = True
+           # user_alias = ['mailAlternativeAddress']
+           # ldap_active = True
             
-            if api_user_alias != file_alias:
+           # if api_user_alias != file_alias:
                 logging.info(f"Checked user {email}, add {user_alias}") 
             
-            (file_alias) = filedb.check_user(user_alias)
-            (api_user_alias) = api.check_user(user_alias)
+            #(file_alias) = filedb.check_user(user_alias)
+            #(api_user_alias) = api.check_user(user_alias)
             
         except Exception:
             logging.info(f"Fehler bei der Verarbeitung von {alias}")

@@ -50,7 +50,7 @@ def sync():
                                            config['LDAP_FILTER'],
                                            ['mailPrimaryAddress', 'displayName', 'userAccountControl', 'mailAlternativeAddress'])
     ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
-                                           '(uid=aborchardt)',
+                                           '(mailPrimaryAddress=)',
                                            ['mailAlternativeAddress'])
     filedb.session_time = datetime.datetime.now()
 
@@ -116,7 +116,7 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not alias[0]:
                 continue
-            user_alias = alias[1]['mailAlternativeAddress'][0].split(',')
+            alias = user_alias[1]['mailAlternativeAddress'][0].split(',')
             ldap_name = alias[1]['displayName'][0].decode()
             ldap_active = True
             

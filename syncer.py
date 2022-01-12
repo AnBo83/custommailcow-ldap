@@ -116,7 +116,7 @@ def sync():
             # LDAP Search still returns invalid objects, test instead of throw.
             if not alias[0]:
                 continue
-            alias = alias[1]['mailAlternativeAddress'][0].split(',')
+            api_user_alias = alias[1]['mailAlternativeAddress'][0].split(',')
             ldap_name = alias[1]['displayName'][0].decode()
             ldap_active = True
                 if api_user_alias != ldap_alias:

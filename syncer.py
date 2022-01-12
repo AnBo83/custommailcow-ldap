@@ -19,7 +19,7 @@ output_groups='conf/groups.csv'
 def main():
     global config
     read_config()
-    getMembers('Chat')
+    getMembers('cn=Chat,cn=Groups,dc=bl,dc=lan')
 
     passdb_conf = read_dovecot_passdb_conf_template()
     plist_ldap = read_sogo_plist_ldap_template()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ldap3 import Server, Connection, ALL, NTLM
+from ldap import Server, Connection, ALL, NTLM
 
 output_users='/tmp/ldap/users.csv'
 output_groups='/tmp/ldap/groups.csv'

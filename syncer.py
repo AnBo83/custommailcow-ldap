@@ -48,7 +48,7 @@ def sync():
 
     ldap_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            config['LDAP_FILTER'],
-                                           ['mailPrimaryAddress'.split(","), 'displayName', 'userAccountControl'])
+                                           ['mailPrimaryAddress', 'displayName', 'userAccountControl'])
     ldap_alias_results = ldap_connector.search_s(config['LDAP_BASE_DN'], ldap.SCOPE_SUBTREE,
                                            '(mailPrimaryAddress=*)',
                                            ['mailAlternativeAddress'])

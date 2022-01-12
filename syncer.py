@@ -111,7 +111,7 @@ def sync():
         filedb.user_set_active_to(email, False)
         logging.info(f"Deactivated user {email} in filedb, not found in LDAP")
 
-    for alias in ldap_alias_results.result():
+    for alias in ldap_alias_results:
         try:
             # LDAP Search still returns invalid objects, test instead of throw.
             if not alias[0]:

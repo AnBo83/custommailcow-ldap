@@ -96,6 +96,7 @@ def sync():
                 unchanged = False
                 
             if unchanged:
+                getMembers()
                 logging.info(f"Checked user {email}, unchanged")
         except Exception:
             logging.info(f"Exception during handling of {x}")

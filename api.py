@@ -103,7 +103,7 @@ def check_user(email):
 
     return True, bool(rsp['active_int']), rsp['name']
 
-def add_alias
+def add_alias(mail,alias):
     json_data =  {
                 'active': 1 if active else 2,
                 'address': alias, # TODO not defined

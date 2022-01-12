@@ -5,7 +5,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install python-ldap sqlalchemy requests
 
 COPY templates ./templates
-COPY api.py filedb.py syncer.py ./
+COPY api.py filedb.py syncer.py export.py ./
 
 VOLUME [ "/db" ]
 VOLUME [ "/conf/dovecot" ]
